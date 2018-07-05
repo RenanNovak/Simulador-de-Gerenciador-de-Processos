@@ -8,6 +8,7 @@ public class GerenciadorProcessos {
 
     private Processo processo;
     public String cargaTrabalhoRetorno = "naoquebra";
+    public int carga = 0;
     private int quantum;
     private int totalCiclos;
     public String pidPronto;
@@ -18,31 +19,37 @@ public class GerenciadorProcessos {
         return processo;
     }
     
-    public void montaTela(int PID, String inteiroTela, int loop, String cargaTrabalhoTela) {
+    public void montaTela(String nomeProcesso, int PID, String inteiroTela, int loop, String cargaTrabalhoTela) {
     	String estado = determinaEstado(inteiroTela, loop, cargaTrabalhoTela);
     	String proxEstado = proxEstado(inteiroTela, loop, cargaTrabalhoTela);
     	valoraPID(PID, loop, cargaTrabalhoTela);
+    	int proces;
+    	if (pidPronto != ""){
+    		proces = 1;
+    	}else {
+    		proces = 0;
+    	}
     	System.out.println(" ========================================================");
     	System.out.println(" |Gerenciador de Processos ");
     	System.out.println(" ========================================================");
-    	System.out.println(" |Contador de ciclo de execução:  ");
-    	System.out.println(" |Processos na fila de pronto  (1) :  " + pidPronto);
-    	System.out.println(" |Processo em execução   : ");
+    	System.out.println(" |Contador de ciclo de execução: ");
+    	System.out.println(" |Processos na fila de pronto  ("+proces+") :  " + pidPronto);
+    	System.out.println(" |Processo em execução   : " + pidEsperando);
     	System.out.println(" |     Tempo restante    :  ");
-    	System.out.println(" |     Carga de trabalho : " + pidEsperando);
-    	System.out.println(" |Processos esperando    : ");
-    	System.out.println(" |     Carga de trabalho : " + pidExecucao);
+    	System.out.println(" |     Carga de trabalho : " );
+    	System.out.println(" |Processos esperando    : " + pidExecucao);
+    	System.out.println(" |     Carga de trabalho : " );
     	System.out.println(" |Processos finalizados  :");
     	System.out.println(" ========================================================");
-    	System.out.println(" Processo 12 word Estado Atual : " + estado);
+    	System.out.println(" Processo "+nomeProcesso+" Estado Atual : " + estado);
     	System.out.println(" Carga de trabalho: " + cargaTrabalhoTela);
     	System.out.println(" Próxima ação: " + proxEstado );
     	System.out.println(" ");
 
-        Console c = System.console();
-        Scanner scan = new Scanner(System.in);
-//        c.readLine();
-        scan.next();
+//        Console c = System.console();
+//        Scanner scan = new Scanner(System.in);
+////        c.readLine();
+//        scan.next();
         
     }
     
@@ -64,15 +71,14 @@ public class GerenciadorProcessos {
 	}
 
 	private String proxEstado(String inteiro, int volta, String trabalho) {  
-
 		if (volta != inteiro.length()) {
-			if (volta + 1 == inteiro.length()){
+			if (volta  == inteiro.length()){
 				return "Terminado";
 			} else if (volta == 0) {
 				return "Selecionar um processo para executar";
-			} else if ((trabalho.substring(0,1).equals("A")) || (trabalho.substring(0,1).equals("B"))) {
+			} else if ((trabalho.substring(1,2).equals("A")) || (trabalho.substring(1,2).equals("B"))) {
 				return "ciclo de execução de CPU";
-			} else if ((trabalho.substring(0,1).equals("C")) || (trabalho.substring(0,1).equals("D"))) {
+			} else if ((trabalho.substring(1,2).equals("C")) || (trabalho.substring(1,2).equals("D"))) {
 				return "ciclo de E/S";
 			}  else {
 				return "";
@@ -82,9 +88,10 @@ public class GerenciadorProcessos {
 	}
 
 	public String determinaEstado(String inteiro, int volta, String trabalho) {
+//		volta=volta+1;
 		if (volta == 0) {
 			return "Pronto";
-		} else if (volta == inteiro.length()){
+		} else if (volta == inteiro.length()+1){
 			return "Terminado";
 		} else if ((trabalho.substring(0, 1).equals("A")) || (trabalho.substring(0, 1).equals("B"))) {
 			return "Executando";
@@ -95,27 +102,29 @@ public class GerenciadorProcessos {
 		}
 		
 	}
-
-	public String executaProcesso(String cargaTrabalhoProcesso) {
+// contador estilo função, pode ser a qualquer momento
+	
+	public String executaProcesso(String cargaTrabalhoProcesso, int volta) {
     	
-    	if (cargaTrabalhoProcesso.substring(0, 1) == "A") {
-    		
+    	if (cargaTrabalhoProcesso.substring(0, 1).equals("A")) {
+    		//carga = carga +1;
     	}
-    	else if(cargaTrabalhoProcesso.substring(0, 1) == "B") {
-    		
+    	else if(cargaTrabalhoProcesso.substring(0, 1).equals( "B")) {
+    		//carga = carga+2;
     	}
-    	else if(cargaTrabalhoProcesso.substring(0, 1) == "C") {
-    		
+    	else if(cargaTrabalhoProcesso.substring(0, 1).equals("C")) {
+    		//carga = carga+1;
     	}
-    	else if(cargaTrabalhoProcesso.substring(0, 1) == "D") {
-    		
+    	else if(cargaTrabalhoProcesso.substring(0, 1).equals("D")) {
+    		//carga = carga + 2;
     	}
     	else {
     		return cargaTrabalhoProcesso;
     	}
-    	
-    	cargaTrabalhoProcesso = cargaTrabalhoProcesso.substring(1, cargaTrabalhoProcesso.length());
-    	cargaTrabalhoRetorno = cargaTrabalhoProcesso.substring(1, cargaTrabalhoProcesso.length());
+    	if (volta != 0) {
+    		cargaTrabalhoProcesso = cargaTrabalhoProcesso.substring(1, cargaTrabalhoProcesso.length());
+    		cargaTrabalhoRetorno = cargaTrabalhoProcesso.substring(1, cargaTrabalhoProcesso.length());
+    	}
 		return cargaTrabalhoProcesso;
     	
     }
@@ -138,11 +147,6 @@ public class GerenciadorProcessos {
     }
 
     public int getTotalCiclos() {
-        return totalCiclos;
+        return carga;
     }
-
-    public void setTotalCiclos(int totalCiclos) {
-        this.totalCiclos = totalCiclos;
-    }
-
 }
