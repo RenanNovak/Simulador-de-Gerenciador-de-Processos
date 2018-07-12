@@ -27,6 +27,7 @@ public class Main {
 	
 	        System.out.println("Informe a carga de trabalho: ");
 	        String cargaTrabalho = scanner.nextLine();
+	        cargaTrabalho = cargaTrabalho + " ";
 	
 	        Random random = new Random();
 	        Integer PID = random.nextInt(30);
@@ -35,38 +36,46 @@ public class Main {
 	
 	        GerenciadorProcessos gerenciadorProcessos = new GerenciadorProcessos();
 	        gerenciadorProcessos.setProcesso(processo);
-	        gerenciadorProcessos.setQuantum(quantum);
 	
 	        GerenciadorProcessos gp = new GerenciadorProcessos();
-	        
-	//        Estamos executando a primeira letra do trabalho como o pronto, porém ela é o executando.
-	//        Verificar para montarTela antes começar a executar.
+	        int volta = 0;
 	        
 	        for (int i = 0; i < cargaTrabalho.length() + 1 ; i++) {
 	        	try {
-	        		if (i==0) {
-	    				gp.montaTela(nomeProcesso, PID, cargaTrabalho, i, cargaTrabalho.substring(0, cargaTrabalho.length()));
-	        		}else {
-	    				gp.montaTela(nomeProcesso, PID, cargaTrabalho, i, cargaTrabalho.substring(i-1, cargaTrabalho.length()));
-	        		}
-					gp.executaProcesso(cargaTrabalho, i);
+	        		if(gp.getQuantum() == quantum && cargaTrabalho.length() !=3) {
+        				i = 0;
+        				gp.setQuantum(0);
+        				cargaTrabalho = cargaTrabalho.substring(volta-1, cargaTrabalho.length());
+        				volta = 0;
+        				
+        			}
+	        			if (i==0) {
+	        				gp.montaTela(nomeProcesso, PID, quantum, cargaTrabalho, i, cargaTrabalho.substring(0, cargaTrabalho.length()));
+		        		}else {
+		    				gp.montaTela(nomeProcesso, PID, quantum, cargaTrabalho, i, cargaTrabalho.substring(i-1, cargaTrabalho.length()));
+		        		}
+						gp.executaProcesso(cargaTrabalho, i);
+						
+						Console c = System.console();
+				        Scanner scan = new Scanner(System.in);
+				        scan.next();
+				        
+				        volta++;
+
+	    			
 					
-					Console c = System.console();
-			        Scanner scan = new Scanner(System.in);
-			        scan.next();
-					
-	        	} catch (Exception e) {
+	        	}catch (Exception e) {
 					e.printStackTrace();
 				}
-	        	
 	        }
 	        System.out.println("Processo excluído."); 
-	        System.out.println("Total de ciclos do processo: " + gp.getTotalCiclos());
+	        System.out.println("Total de ciclos do processo: " + gp.getTotalCiclos(cargaTrabalho));
 	        System.out.println("Deseja criar um novo processo (S/N)?"); 
 	        verMenu  = scanner.nextLine();
     	}
     	System.out.println("Programa encerrado."); 
     }
+	
 
 
 }
