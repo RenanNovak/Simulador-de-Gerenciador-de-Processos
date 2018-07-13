@@ -5,7 +5,7 @@ public class Processo {
     private String nome;
     private int PID;
     private String cargaTrabalho;
-    private Estado estado;
+   
 
     public Processo(String nome, int PID, String cargaTrabalho) {
         this.nome = nome;
@@ -25,7 +25,5 @@ public class Processo {
         return cargaTrabalho;
     }
 
-    public Estado getEstado() {
-        return estado;
-    }
+    
 }
