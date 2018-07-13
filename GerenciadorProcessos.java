@@ -114,19 +114,25 @@ public class GerenciadorProcessos {
 	}
 
 	private String proxEstado(String inteiro, int volta, String trabalho) {  
+		
 		if (inteiro.length() == 3 && volta != 1) {
 			return "O processo sera excluído";
 		}
 		else {
-			if (volta == 0) {
-				return "Selecionar um processo para executar";
-			} else if ((trabalho.substring(1,2).equals("A")) || (trabalho.substring(1,2).equals("B"))) {
-				return "ciclo de execução de CPU";
-			} else if ((trabalho.substring(1,2).equals("C")) || (trabalho.substring(1,2).equals("D"))) {
-				return "ciclo de E/S";
-			}  else {
-				return "";
+			if (trabalho.length() <= 2) {
+				return "O processo sera excluído";
+			}else {
+				if (volta == 0) {
+					return "Selecionar um processo para executar";
+				} else if ((trabalho.substring(1,2).equals("A")) || (trabalho.substring(1,2).equals("B"))) {
+					return "ciclo de execução de CPU";
+				} else if ((trabalho.substring(1,2).equals("C")) || (trabalho.substring(1,2).equals("D"))) {
+					return "ciclo de E/S";
+				}  else {
+					return "";
+				}
 			}
+			
 		}
 	}
 

@@ -42,7 +42,7 @@ public class Main {
 	        
 	        for (int i = 0; i < cargaTrabalho.length() + 1 ; i++) {
 	        	try {
-	        		if(gp.getQuantum() == quantum && cargaTrabalho.length() !=3) {
+	        		if(gp.getQuantum() == quantum && cargaTrabalho.length() != quantum+1) {
         				i = 0;
         				gp.setQuantum(0);
         				cargaTrabalho = cargaTrabalho.substring(volta-1, cargaTrabalho.length());
